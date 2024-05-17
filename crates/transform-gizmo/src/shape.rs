@@ -81,9 +81,9 @@ impl ShapeBuidler {
 
         self.tessellate_shape(if closed {
             points.pop();
-            Shape::closed_line(points, stroke.into())
+            Shape::closed_line(points, stroke)
         } else {
-            Shape::line(points, stroke.into())
+            Shape::line(points, stroke)
         })
     }
 
@@ -100,7 +100,7 @@ impl ShapeBuidler {
         let mut points = self.arc_points(radius, 0.0, TAU);
         points.pop();
 
-        self.tessellate_shape(Shape::convex_polygon(points, color, stroke.into()))
+        self.tessellate_shape(Shape::convex_polygon(points, color, stroke))
     }
 
     pub(crate) fn line_segment(

@@ -166,6 +166,6 @@ fn main() -> eframe::Result<()> {
     eframe::run_native(
         "transform_gizmo_egui example",
         NativeOptions::default(),
-        Box::new(|_| Box::new(ExampleApp::new())),
+        Box::new(|_| Ok(Box::new(ExampleApp::new()))),
     )
 }

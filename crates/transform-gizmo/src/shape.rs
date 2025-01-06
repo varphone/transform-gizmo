@@ -119,10 +119,7 @@ impl ShapeBuidler {
             }
         }
 
-        self.tessellate_shape(Shape::LineSegment {
-            points,
-            stroke: stroke.into(),
-        })
+        self.tessellate_shape(Shape::closed_line(points.into(), stroke))
     }
 
     pub(crate) fn arrow(&self, from: DVec3, to: DVec3, stroke: impl Into<Stroke>) -> Mesh {

@@ -1,6 +1,6 @@
 use bevy::{math::DQuat, prelude::*};
 use bevy_egui::{
-    EguiContexts, EguiPlugin,
+    EguiContexts, EguiPlugin, EguiPrimaryContextPass,
     egui::{self, Layout, RichText, Widget},
 };
 use transform_gizmo_bevy::{config::TransformPivotPoint, prelude::*};
@@ -9,10 +9,8 @@ pub struct GuiPlugin;
 
 impl Plugin for GuiPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(EguiPlugin {
-            enable_multipass_for_primary_context: false,
-        })
-        .add_systems(Update, update_ui);
+        app.add_plugins(EguiPlugin::default())
+            .add_systems(EguiPrimaryContextPass, update_ui);
     }
 }
 
@@ -20,8 +18,10 @@ fn update_ui(
     mut contexts: EguiContexts,
     mut gizmo_options: ResMut<GizmoOptions>,
     gizmo_targets: Query<&GizmoTarget>,
-) {
-    let options_panel = egui::SidePanel::left("options").show(contexts.ctx_mut(), |ui| {
+) -> Result {
+    let ctx = contexts.ctx_mut()?;
+
+    let options_panel = egui::SidePanel::left("options").show(ctx, |ui| {
         draw_options(ui, &mut gizmo_options);
     });
 
@@ -32,7 +32,7 @@ fn update_ui(
             egui::Align2::LEFT_TOP,
             options_panel.response.rect.right_top().to_vec2(),
         )
-        .show(contexts.ctx_mut(), |ui| {
+        .show(ctx, |ui| {
             ui.allocate_ui(ui.ctx().available_rect().size(), |ui| {
                 let latest_gizmo_result = gizmo_targets
                     .iter()
@@ -41,6 +41,8 @@ fn update_ui(
                 draw_gizmo_result(ui, latest_gizmo_result);
             });
         });
+
+    Ok(())
 }
 
 fn draw_gizmo_result(ui: &mut egui::Ui, gizmo_result: Option<GizmoResult>) {

@@ -38,10 +38,10 @@ fn setup_scene(
 
     let colors: [Color; 3] = [RED.into(), LIME.into(), BLUE.into()];
 
-    for i in 0..cube_count {
+    for (i, color) in (0..cube_count).zip(colors.into_iter().cycle()) {
         commands.spawn((
             Mesh3d(cube_mesh.clone()),
-            MeshMaterial3d(materials.add(colors[i as usize % colors.len()])),
+            MeshMaterial3d(materials.add(color)),
             Transform::from_xyz(-(cube_count / 2) as f32 * 1.5 + (i as f32 * 1.5), 0.0, 0.0),
             // Pick,
             OutlineVolume {

@@ -34,7 +34,7 @@ impl Transform {
 
 impl From<Transform> for DMat4 {
     fn from(transform: Transform) -> Self {
-        DMat4::from_scale_rotation_translation(
+        Self::from_scale_rotation_translation(
             DVec3::from(transform.scale),
             DQuat::from(transform.rotation),
             DVec3::from(transform.translation),

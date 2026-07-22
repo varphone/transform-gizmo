@@ -106,8 +106,8 @@ impl ShapeBuilder {
     pub(crate) fn line_segment(&self, from: DVec3, to: DVec3, stroke: impl Into<Stroke>) -> Mesh {
         let mut points: [Pos2; 2] = Default::default();
 
-        for (i, point) in points.iter_mut().enumerate() {
-            if let Some(pos) = world_to_screen(self.viewport, self.mvp, [from, to][i]) {
+        for (point, world_point) in points.iter_mut().zip([from, to]) {
+            if let Some(pos) = world_to_screen(self.viewport, self.mvp, world_point) {
                 *point = pos;
             } else {
                 return Mesh::default();

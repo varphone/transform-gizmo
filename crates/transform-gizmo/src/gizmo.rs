@@ -322,11 +322,17 @@ impl Gizmo {
     }
 
     fn update_config_with_result(&mut self, result: GizmoResult) {
-        let new_config_transform = self.update_transforms_with_result(
-            result,
-            &[self.config.as_transform()],
-            &[self.gizmo_start_transform],
-        )[0];
+        let Some(new_config_transform) = self
+            .update_transforms_with_result(
+                result,
+                &[self.config.as_transform()],
+                &[self.gizmo_start_transform],
+            )
+            .into_iter()
+            .next()
+        else {
+            return;
+        };
 
         self.config.update_transform(new_config_transform);
     }

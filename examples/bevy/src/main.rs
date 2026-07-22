@@ -28,7 +28,7 @@ fn main() {
         .add_plugins(GuiPlugin)
         .add_plugins(PanOrbitCameraPlugin)
         .add_plugins(ScenePlugin)
-        .add_plugins(TransformGizmoPlugin)
+        .add_plugins(transform_gizmo_bevy::TransformGizmoPlugin)
         .add_plugins(GizmoPickingPlugin)
         .insert_resource(GizmoOptions {
             hotkeys: Some(GizmoHotkeys::default()),

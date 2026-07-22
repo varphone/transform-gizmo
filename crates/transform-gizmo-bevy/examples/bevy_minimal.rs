@@ -7,7 +7,7 @@ use transform_gizmo_bevy::*;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, TransformGizmoPlugin))
+        .add_plugins((DefaultPlugins, transform_gizmo_bevy::TransformGizmoPlugin))
         .add_systems(Startup, setup)
         .run();
 }
@@ -36,7 +36,7 @@ fn setup(
     // light
     commands.spawn((
         PointLight {
-            shadows_enabled: true,
+            shadow_maps_enabled: true,
             ..default()
         },
         Transform::from_xyz(4.0, 8.0, 4.0),

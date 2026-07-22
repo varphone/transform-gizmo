@@ -20,7 +20,14 @@ fn update_ui(
     gizmo_targets: Query<&GizmoTarget>,
 ) {
     let context = contexts.ctx_mut().unwrap();
-    let options_panel = egui::SidePanel::left("options").show(context, |ui| {
+    let mut viewport_ui = egui::Ui::new(
+        context.clone(),
+        "viewport".into(),
+        egui::UiBuilder::new()
+            .layer_id(egui::LayerId::background())
+            .max_rect(context.viewport_rect()),
+    );
+    let options_panel = egui::Panel::left("options").show(&mut viewport_ui, |ui| {
         draw_options(ui, &mut gizmo_options);
     });
 
@@ -32,7 +39,7 @@ fn update_ui(
             options_panel.response.rect.right_top().to_vec2(),
         )
         .show(context, |ui| {
-            ui.allocate_ui(ui.ctx().available_rect().size(), |ui| {
+            ui.allocate_ui(ui.ctx().content_rect().size(), |ui| {
                 let latest_gizmo_result = gizmo_targets
                     .iter()
                     .find_map(|target| target.latest_result());
